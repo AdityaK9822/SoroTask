@@ -43,6 +43,11 @@ MAX_TASK_ID=100
 
 # Wait for transaction confirmation (default: true, set to 'false' to disable)
 WAIT_FOR_CONFIRMATION=true
+
+# Structured logging
+LOG_LEVEL=info
+# Optional: pretty console output for local development only
+# LOG_FORMAT=pretty
 ```
 
 ### Explanation of Variables:
@@ -56,6 +61,8 @@ WAIT_FOR_CONFIRMATION=true
 - **`MAX_TASK_ID`**: The keeper will check task IDs from 1 to this value. Alternatively, use `TASK_IDS` to specify exact task IDs.
 - **`TASK_IDS`**: Optional comma-separated list of specific task IDs to monitor (e.g., "1,2,3,5"). If set, overrides `MAX_TASK_ID`.
 - **`WAIT_FOR_CONFIRMATION`**: Whether to wait for transaction confirmation after submitting. Set to 'false' for fire-and-forget mode.
+- **`LOG_LEVEL`**: Minimum log severity to emit (`trace`, `debug`, `info`, `warn`, `error`, `fatal`).
+- **`LOG_FORMAT`**: Optional log renderer. Leave unset for JSON logs; set to `pretty` for local human-readable output.
 
 ## Setup Instructions
 
@@ -80,6 +87,24 @@ Once you have your prerequisite software and environment variables ready, follow
    ```
 
 If successful, you will see output indicating that the Keeper has started, along with logs of its periodic checks for due tasks!
+
+## Mock Soroban RPC for Faster Local Testing
+
+If you want to test keeper flows without a full Soroban node, the keeper includes a lightweight mock JSON-RPC server.
+
+```bash
+cd keeper
+npm run mock-rpc
+```
+
+Then point the keeper at it:
+
+```bash
+export SOROBAN_RPC_URL=http://127.0.0.1:4100
+export NETWORK_PASSPHRASE="Test SDF Future Network ; October 2022"
+```
+
+Detailed usage, supported methods, and test examples are in [docs/mock-soroban-rpc.md](./docs/mock-soroban-rpc.md).
 
 ## Troubleshooting
 
